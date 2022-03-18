@@ -6,6 +6,7 @@ import 'package:movies/MoviesVideosBloc/movies_videos_bloc.dart';
 import 'package:movies/Screens/home_screen.dart';
 import 'CastsBloc/casts_bloc.dart';
 import 'DetailMovieBloc/movie_details_bloc.dart';
+import 'SearchMoviesBloc/search_movie_bloc.dart';
 void main() {
   runApp(MyApp());
 }
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => MovieDetailsBloc()),
           BlocProvider(create: (context) => CastsBloc()),
           BlocProvider(create: (context) => MoviesVideosBloc()),
+          BlocProvider(create: (context) => SearchMovieBloc()),
 
 
         ],

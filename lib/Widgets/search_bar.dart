@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 class SearchBarWidget extends StatelessWidget {
@@ -11,13 +12,19 @@ class SearchBarWidget extends StatelessWidget {
       onTap: () {
       },
       child: Container(
-        color: Colors.white,
+        decoration: BoxDecoration(
+          borderRadius:  BorderRadius.all(Radius.circular(5)),
+          color: Colors.white,
+
+        ),
         padding: const EdgeInsets.all(0),
         child: Row(
           children: <Widget>[
             Expanded(
               child: TextFormField(
-                onChanged:typedText,
+                // onChanged:typedText,
+                // onSaved:typedText ,
+                onFieldSubmitted:typedText ,
                 maxLines: 1,
                 style: TextStyle(
                     fontFamily: "din",

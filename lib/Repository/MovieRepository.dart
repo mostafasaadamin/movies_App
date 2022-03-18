@@ -90,6 +90,8 @@ class MovieRepository {
 
   Future<MovieResponse> searchForMovies({@required searchedMovie, @required int page}) async {
     String url = "$searchMovieUrl?api_key=$apiKey&language=ar&page=$page&query=$searchedMovie";
+    print("SearchedMoviesurl${url}");
+
     MovieResponse movieResponse;
     final client = new http.Client();
     final response = await client.get(

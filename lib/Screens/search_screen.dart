@@ -19,13 +19,24 @@ class SearchScreen extends StatefulWidget {
 class _HomeScreenState extends State<SearchScreen> {
   final Connectivity _connectivity = Connectivity();
   StreamSubscription<ConnectivityResult> _connectivitySubscription;
+  final _controller = ScrollController();
+int page=1;
   @override
   void initState() {
     super.initState();
+    _controller.addListener(() {
+      if (_controller.position.pixels == _controller.position.maxScrollExtent) {
+         page++;
+         FetchSearchedMoviesPaging getMoviesEvent=FetchSearchedMoviesPaging(page:page,searchMovie: searchedText);
+         BlocProvider.of<SearchMovieBloc>(context).add(getMoviesEvent);
+      }
+    });
     initConnectivity();
     _connectivitySubscription =
         _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
   }
+  String searchedText="";
+  List<Movie> allMoviesList=[];
   @override
   void dispose() {
     _connectivitySubscription.cancel();
@@ -71,7 +82,7 @@ class _HomeScreenState extends State<SearchScreen> {
         appBar: AppBar(
           backgroundColor: style.Themes.mainColor,
           centerTitle: true,
-          title: Text("Searched Moview"),
+          title: Text("Searched Movies"),
         ),
         body:SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -80,31 +91,57 @@ class _HomeScreenState extends State<SearchScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SearchBarWidget(typedText: (value){
-                  _fetchSearchedMovieData(context: context,page: 1,searchText: value);
-                },),
-SizedBox(height: 10,),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: SearchBarWidget(typedText: (value){
+                    allMoviesList.clear();
+                    page=1;
 
+                    _fetchSearchedMovieData(context: context,page:page,searchText: value);
+                    searchedText=value;
+                  },),
+                ),
+                SizedBox(height: 10,),
                 Container(
                   height: MediaQuery.of(context).size.height*0.9,
                   child: BlocBuilder<SearchMovieBloc, SearchMoviesState>(
                       builder: (BuildContext context, SearchMoviesState state) {
                         if (state is ErrorState) {
-                          return Text(state.error??"Error happened");
+                          return Container();
                         }
                         if (state is LoadedState) {
                           print("GenreList${state.movieList.length}");
                           List<Movie> moviesList = state.movieList;
-                          return ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              itemCount: moviesList.length,
-                              shrinkWrap: true,
-                              itemBuilder: (BuildContext context, int index)
-                              {
-                                return MovieCard(movie: moviesList[index]);
-                              }
+                          allMoviesList.addAll(moviesList);
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom:100.0),
+                            child: ListView.builder(
+                              controller: _controller,
+                                scrollDirection: Axis.vertical,
+                                itemCount: allMoviesList.length,
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index)
+                                {
+                                  return MovieCard(movie: allMoviesList[index]);
+                                }
+                            ),
                           );
-                        }else
+                        }else if(state is LoadingStatePaging){
+                          return   Padding(
+                            padding: const EdgeInsets.only(bottom:100.0),
+                            child:ListView.builder(
+                                controller: _controller,
+                                scrollDirection: Axis.vertical,
+                                itemCount: allMoviesList.length,
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index)
+                                {
+                                  return MovieCard(movie: allMoviesList[index]);
+                                }
+                            ),
+
+                          );
+                        } else
                         {
                           return Center(child: CircularProgressIndicator());
                         }

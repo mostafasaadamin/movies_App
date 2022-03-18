@@ -12,7 +12,7 @@ part 'search_movie_event.dart';
 part 'search_movie_state.dart';
 
 class SearchMovieBloc extends Bloc<SearchMovieEvent, SearchMoviesState> {
-  SearchMovieBloc(SearchMoviesState initialState) : super(initialState);
+  SearchMovieBloc() : super(SearchMoviesInitial());
   MovieRepository repo=MovieRepository();
   List<Movie> movies;
   @override
@@ -36,6 +36,25 @@ class SearchMovieBloc extends Bloc<SearchMovieEvent, SearchMoviesState> {
       } catch (e) {
         yield ErrorState(error: 'Unknown Error',);
       }
+    }else if (event is FetchSearchedMoviesPaging){
+      yield LoadingStatePaging();
+      try{
+        MovieResponse response =await repo.searchForMovies(page:event.page,searchedMovie: event.searchMovie);
+        print("data${response.movies.length}");
+        if(response!=null)
+          yield LoadedState(movieList: response.movies);
+        else
+          yield ErrorState(error: "NO data  Found");
+      }on SocketException {
+        yield ErrorState(error: 'No Internet',);
+      } on HttpException {
+        yield ErrorState(error: 'No Service Found',);
+      } on FormatException {
+        yield ErrorState(error: 'Invalid Response format',);
+      } catch (e) {
+        yield ErrorState(error: 'Unknown Error',);
+      }
+
     }
   }
 }

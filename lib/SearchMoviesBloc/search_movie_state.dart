@@ -19,6 +19,13 @@ class LoadingState extends SearchMoviesState {
     throw UnimplementedError();
   }
 }
+class LoadingStatePaging extends SearchMoviesState {
+  @override
+  MoviesState() {
+    // TODO: implement MoviesState
+    throw UnimplementedError();
+  }
+}
 class LoadedState extends SearchMoviesState
 {
   final List<Movie> movieList;

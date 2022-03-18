@@ -68,7 +68,7 @@ class MovieCard extends StatelessWidget {
                   Container(
                     width: 140.0,
                     child: Text(
-                      movie.title
+                      movie.title??""
                       ,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -120,7 +120,7 @@ class MovieCard extends StatelessWidget {
                     height: 10.0,
                   ),
                   Text(
-                    movie.releaseDate,
+                    movie.releaseDate??"",
                     style: TextStyle(
                         fontSize: 10.0,
                         fontWeight: FontWeight.bold,

@@ -11,3 +11,9 @@ class FetchSearchedMovies extends SearchMovieEvent
   String searchMovie;
   FetchSearchedMovies({@required this.page,@required this.searchMovie});
 }
+class FetchSearchedMoviesPaging extends SearchMovieEvent
+{
+  int page;
+  String searchMovie;
+  FetchSearchedMoviesPaging({@required this.page,@required this.searchMovie});
+}

@@ -18,7 +18,7 @@ class _CastsWidgetState extends State<CastsWidget> {
     return  BlocBuilder<CastsBloc, CastsState>(
         builder: (BuildContext context, CastsState state) {
           if (state is ErrorStateCasts) {
-            return Text("Error happened");
+            return Text("Error happened"+state?.error);
           }
           if (state is LoadedStateCasts) {
             return _buildCastWidget(state.casts);

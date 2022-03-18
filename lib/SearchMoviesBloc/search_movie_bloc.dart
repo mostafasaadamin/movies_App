@@ -1,29 +1,28 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:meta/meta.dart';
 import 'package:movies/Models/Movie.dart';
 import 'package:movies/Models/MovieResonse.dart';
 import 'package:movies/Repository/MovieRepository.dart';
 
-part 'movie_genre_event.dart';
-part 'movie_genre_state.dart';
+part 'search_movie_event.dart';
+part 'search_movie_state.dart';
 
-class MovieGenreBloc extends Bloc<MovieGenreEvent, MovieGenreState> {
-  MovieGenreBloc() : super(MovieGenreInitial());
+class SearchMovieBloc extends Bloc<SearchMovieEvent, SearchMoviesState> {
+  SearchMovieBloc(SearchMoviesState initialState) : super(initialState);
   MovieRepository repo=MovieRepository();
   List<Movie> movies;
   @override
-  Stream<MovieGenreState> mapEventToState(
-    MovieGenreEvent event,
-  ) async* {
-    if(event is FetchGenreMovies)
+  Stream<SearchMoviesState> mapEventToState(SearchMovieEvent event,) async* {
+    if(event is FetchSearchedMovies)
     {
       yield LoadingState();
       try{
-        print("FetchGenreMovies${event.genreId}");
-        MovieResponse response =await repo.getMoviesByGenre(genreId: event.genreId,page: 1);
+        MovieResponse response =await repo.searchForMovies(page:event.page,searchedMovie: event.searchMovie);
+        print("data${response.movies.length}");
         if(response!=null)
           yield LoadedState(movieList: response.movies);
         else

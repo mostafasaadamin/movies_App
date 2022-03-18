@@ -9,14 +9,11 @@ import 'package:movies/DetailMovieBloc/movie_details_bloc.dart';
 import 'package:movies/Models/Movie.dart';
 import 'package:movies/Models/MovieDetails.dart';
 import 'package:movies/MoviesVideosBloc/movies_videos_bloc.dart';
-import 'package:movies/SimilarMovie/similar_movie_bloc.dart';
 import 'package:movies/Style/theme.dart' as style;
 import 'package:movies/Widgets/casts_widget.dart';
 import 'package:movies/Widgets/movie_info.dart';
-import 'package:movies/Widgets/similar_movie_widget.dart';
 import 'package:movies/Widgets/video_player_widget.dart';
 import 'package:sliver_fab/sliver_fab.dart';
-
 class DetailsMovieScreen extends StatefulWidget {
   Movie movie;
   DetailsMovieScreen({@required this.movie});
@@ -149,8 +146,8 @@ class _DetailsMovieScreenState extends State<DetailsMovieScreen> {
                  ),
                  SizedBox(height:10.0),
                  CastsWidget(movieId: widget.movie.id),
-                SizedBox(height:10.0),
-                SimilarMovieWidget(movieId: widget.movie.id)
+                // SizedBox(height:10.0),
+                // SimilarMovieWidget(movieId: widget.movie.id)
               ])),
             ),
           ],
@@ -160,7 +157,6 @@ class _DetailsMovieScreenState extends State<DetailsMovieScreen> {
   }
 
   void _fetchHomeData(BuildContext context, int movieId) {
-
     //fetch videos for movies data bloc
     MoviesVideosEvent videos = FetchMoviesVideos(movieId: movieId);
     BlocProvider.of<MoviesVideosBloc>(context).add(videos);

@@ -1,16 +1,13 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:movies/Models/Movie.dart';
 import 'package:movies/Models/MovieResonse.dart';
 import 'package:movies/Repository/MovieRepository.dart';
-
 part 'movies_event.dart';
 part 'movies_state.dart';
-
 class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   MoviesBloc() : super(MoviesInitial());
   MovieRepository repo=MovieRepository();

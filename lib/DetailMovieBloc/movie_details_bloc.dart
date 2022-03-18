@@ -4,11 +4,8 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:movies/GenresBloc/genres_bloc.dart';
-import 'package:movies/Models/Movie.dart';
 import 'package:movies/Models/MovieDetails.dart';
 import 'package:movies/Repository/MovieRepository.dart';
-
 part 'movie_details_event.dart';
 part 'movie_details_state.dart';
 

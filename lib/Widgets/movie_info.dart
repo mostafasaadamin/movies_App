@@ -105,53 +105,6 @@ return Column(
       ),
 
     ),
-    SizedBox(height:10),
-    Column(
-      //mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left:10.0),
-          child: Text(
-            "GENRE",
-            style: TextStyle(
-                height: 1.5, fontSize: 12.0, color:style.Themes.titleColor,
-                fontWeight: FontWeight.w500
-            ),
-          ),
-        ),
-        SizedBox(height:10),
-        Container(
-          height: 50.0,
-          child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: movie.genres.length,
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index)
-              {
-                return Padding(
-                  padding: const EdgeInsets.only(left:8.0),
-                  child: Chip(
-                    label:  Text(
-                      movie.genres.elementAt(index).name,
-                      style: TextStyle(
-                          height: 1.5, fontSize: 12.0, color:Colors.white,
-                          fontWeight: FontWeight.bold
-                      ),
-                    ),
-                    backgroundColor: Colors.amber,
-                    elevation: 2.0,
-                    labelPadding: EdgeInsets.only(left:5.0,right: 5.0),
-                    avatar: CircleAvatar(
-                      backgroundImage: AssetImage("asset/img/avatat.jpg"),
-                    ),
-                  ),
-                );
-              }
-          ),
-        ),
-      ],
-    ),
 
   ],
 );
@@ -161,6 +114,5 @@ return Column(
   {
     FetchMovieDetails movieDetial = FetchMovieDetails(movieId: movieId);
     BlocProvider.of<MovieDetailsBloc>(context).add(movieDetial);
-
   }
 }

@@ -6,7 +6,7 @@ class Movie {
   String backPoster;
   String overview;
   double rating;
-
+  String releaseDate;
   Movie(this.id, this.popularity, this.title, this.poster, this.backPoster,
       this.overview, this.rating);
 
@@ -18,6 +18,7 @@ class Movie {
     poster = json["poster_path"];
     backPoster = json["backdrop_path"];
     overview = json["overview"];
+    releaseDate=json["release_date"];
     rating = json["vote_average"].toDouble();
   }
 }

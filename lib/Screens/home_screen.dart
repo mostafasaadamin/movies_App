@@ -1,24 +1,13 @@
 import 'dart:async';
-
 import 'package:connectivity/connectivity.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies/GenresBloc/genres_bloc.dart';
-import 'package:movies/Models/Genre.dart';
 import 'package:movies/Models/Movie.dart';
-import 'package:movies/Models/Person.dart';
-//import 'package:movies/MovieBloc/movies_bloc.dart';
-import 'package:movies/PersonBloc/persons_bloc.dart';
-import 'package:movies/PlayingMoviesBoc/playing_movies_bloc.dart';
-import 'package:movies/PopularMoviesBloc/popular_movies_bloc.dart';
+import 'package:movies/MovieBloc/movies_bloc.dart';
 import 'package:movies/Style/theme.dart' as style;
 import 'package:movies/Widgets/movie_card.dart';
-import 'package:movies/Widgets/now_playing_movies_widget.dart';
-import 'package:movies/Widgets/persons_widget.dart';
-import 'package:movies/Widgets/tab_bar_items.dart';
-
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
  bool isConnected=true;
@@ -98,99 +87,30 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height:228 ,
-                child: BlocBuilder<PlayingMoviesBloc, PlayingMoviesState>(
-                    builder: (BuildContext context, PlayingMoviesState state) {
+               height: MediaQuery.of(context).size.height*0.9,
+                child: BlocBuilder<MoviesBloc, MoviesState>(
+                    builder: (BuildContext context, MoviesState state) {
                       if (state is ErrorState) {
-                        return nowPlayingMoviesWidget(movies: []);
+                       return Text(state.error??"Error happened");
                       }
                       if (state is LoadedState) {
+                        print("GenreList${state.movieList.length}");
                         List<Movie> moviesList = state.movieList;
-                        return nowPlayingMoviesWidget(movies: moviesList);
-                      }
-                      return Center(child: CircularProgressIndicator());
-                    }),
-              ),
-              SizedBox(height:10),
-              Container(
-             height: 300.0,
-                child: BlocBuilder<GenresBloc, GenresState>(
-                    builder: (BuildContext context, GenresState state) {
-                      if (state is ErrorStateGenres) {
-                     //   return nowPlayingMoviesWidget(movies: []);
-                      }
-                      if (state is LoadedStateGenres) {
-                        print("GenreList${state.genresList.length}");
-                        List<Genre> genreList = state.genresList;
-                        return TabBarItems(genreList: genreList);
+                        return ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            itemCount: moviesList.length,
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index)
+                            {
+                              return MovieCard(movie: moviesList[index]);
+                            }
+                        );
                       }else
                         {
                         return Center(child: CircularProgressIndicator());
                         }
                     }),
               ),
-              SizedBox(height:10),
-              Text("Trending persons this week",style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0,
-                color: Colors.white
-              ),),
-              SizedBox(height:10),
-              Container(
-                height: 200.0,
-                child: BlocBuilder<PersonsBloc, PersonsState>(
-                    builder: (BuildContext context, PersonsState state) {
-                      if (state is ErrorStatePersons) {
-
-                      }
-                      if (state is LoadedStatePersons) {
-                        List<Person> persons = state.persons;
-                        return
-                          ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: persons.length,
-                              shrinkWrap: true,
-                              itemBuilder: (BuildContext context, int index)
-                              {
-                                return PersonsWidget(person: persons[index]);
-                              }
-                          );
-                      }else
-                      {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    }),
-              ),
-              Text("Top Rated Movies",style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
-                  color: Colors.white
-              ),),
-              SizedBox(height:10),
-          Container(
-            height: 300.0,
-            child: BlocBuilder<PopularMoviesBloc, PopularMoviesState>(
-                builder: (BuildContext context, PopularMoviesState state) {
-                  if (state is ErrorStatePopular) {
-                    //   return nowPlayingMoviesWidget(movies: []);
-                  }
-                  if (state is LoadedStatePopular) {
-                    List<Movie> movies = state.movieList;
-                    return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: movies.length,
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index)
-                        {
-                          return MovieCard(movie: movies[index]);
-                        }
-                    );
-                  }else
-                  {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                }),
-          )
             ],
           ),
         ),
@@ -211,13 +131,7 @@ Scaffold(
 //method for fetch movies data
   void _fetchHomeData(BuildContext context)
   {
-    FetchPlayingMovies movies=FetchPlayingMovies(page: 1);
-    FetchGenres genres=FetchGenres(page: 1);
-    FetchPersons persons=FetchPersons();
-    FetchPopularMovies popularMovies=FetchPopularMovies(page: 1);
-    BlocProvider.of<PlayingMoviesBloc>(context).add(movies);
-    BlocProvider.of<GenresBloc>(context).add(genres);
-    BlocProvider.of<PersonsBloc>(context).add(persons);
-    BlocProvider.of<PopularMoviesBloc>(context).add(popularMovies);
+    FetchMovies getMoviesEvent=FetchMovies(page:1);
+    BlocProvider.of<MoviesBloc>(context).add(getMoviesEvent);
   }
 }

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/Models/Movie.dart';
 import 'package:movies/MovieBloc/movies_bloc.dart';
+import 'package:movies/Screens/search_screen.dart';
 import 'package:movies/Style/theme.dart' as style;
 import 'package:movies/Widgets/movie_card.dart';
 class HomeScreen extends StatefulWidget {
@@ -75,7 +76,9 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             icon: Icon(EvaIcons.searchOutline,color:Colors.white),
-            onPressed: null,
+            onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SearchScreen()));
+            },
           )
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/screenutil_init.dart';
 import 'package:movies/MovieBloc/movies_bloc.dart';
 import 'package:movies/MoviesVideosBloc/movies_videos_bloc.dart';
 import 'package:movies/Screens/home_screen.dart';
@@ -22,16 +23,18 @@ class MyApp extends StatelessWidget {
 
 
         ],
-        child: MaterialApp(
-          locale: Locale("en",''),
-          debugShowCheckedModeBanner: false,
+        child:  ScreenUtilInit(
+          builder:()=> MaterialApp(
+            locale: Locale("en",''),
+            debugShowCheckedModeBanner: false,
       title: 'Movies',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: HomeScreen(),
-    ));
+    ),
+        ));
   }
 }
 

@@ -66,9 +66,9 @@ class SearchMovieBloc extends Bloc<SearchMovieEvent, SearchMoviesState> {
       yield LoadingStatePaging();
       try{
 List<Movie> movies=await HiveOperations.getInstance().readSavedMovies();
-
-        if(movies!=null)
-          yield LoadedState(movieList: movies,totalPage: 1);
+print("MoviesSizeIS${movies.length}");
+        if(movies.isNotEmpty)
+          yield LoadedSavedSearchState(movieList: movies,totalPage: 1);
         else
           yield ErrorState(error: "NO data  Found");
       }on SocketException {

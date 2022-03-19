@@ -1,13 +1,23 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/screenutil_init.dart';
+import 'package:hive/hive.dart';
+import 'package:movies/Date/Models/Movie.dart';
 import 'package:movies/ViewModels/MovieBloc/movies_bloc.dart';
 import 'package:movies/ViewModels/MoviesVideosBloc/movies_videos_bloc.dart';
 import 'package:movies/Presentation/Screens/home_screen.dart';
+import 'package:path_provider/path_provider.dart';
 import 'ViewModels/CastsBloc/casts_bloc.dart';
 import 'ViewModels/DetailMovieBloc/movie_details_bloc.dart';
 import 'ViewModels/searchMoviesBloc/search_movie_bloc.dart';
-void main() {
+void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Directory appDocumentDir = await getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDir.path);
+  Hive.registerAdapter(MovieAdapter());
   runApp(MyApp());
 }
 

@@ -43,7 +43,7 @@ dependencies:
   flutter_screenutil:
   hive:
   hive_flutter:
-
+  path_provider:
 dev_dependencies:
   flutter_test:
     sdk: flutter

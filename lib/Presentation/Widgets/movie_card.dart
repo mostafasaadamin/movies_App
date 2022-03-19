@@ -30,7 +30,7 @@ class MovieCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              movie.poster == null
+              movie?.poster == null
                   ? Container(
                 width: 120.0.w,
                 height: 100.0.h,
@@ -69,7 +69,7 @@ class MovieCard extends StatelessWidget {
                   Container(
                     width: 140.0.w,
                     child: Text(
-                      movie.title??""
+                      movie?.title??""
                       ,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -89,7 +89,7 @@ class MovieCard extends StatelessWidget {
                       RatingBar.builder(
                         minRating: 1,
                         itemSize: 10.0,
-                        initialRating: movie.rating,
+                        initialRating: movie?.rating??0.0,
                         allowHalfRating: false,
                         itemCount: 10,
                         ignoreGestures: true,
@@ -109,7 +109,7 @@ class MovieCard extends StatelessWidget {
                       SizedBox(width: 2.0),
 
                       Text(
-                        " ( ${movie.rating.toString()} ) ",
+                        " ( ${movie?.rating.toString()} ) ",
                         style: TextStyle(
                             fontSize: 10.0.sp,
                             fontWeight: FontWeight.bold,
@@ -121,7 +121,7 @@ class MovieCard extends StatelessWidget {
                     height: 10.0.h,
                   ),
                   Text(
-                    movie.releaseDate??"",
+                    movie?.releaseDate??"",
                     style: TextStyle(
                         fontSize: 10.0.sp,
                         fontWeight: FontWeight.bold,
@@ -133,7 +133,7 @@ class MovieCard extends StatelessWidget {
                   Container(
                     width: MediaQuery.of(context).size.width*0.5,
                     child: Text(
-                      movie.overview??"",
+                      movie?.overview??"",
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(

@@ -38,6 +38,18 @@ class LoadedState extends SearchMoviesState
     throw UnimplementedError();
   }
 }
+class LoadedSavedSearchState extends SearchMoviesState
+{
+  final List<Movie> movieList;
+  int totalPage;
+  LoadedSavedSearchState({@required this.movieList,@required this.totalPage});
+
+  @override
+  MoviesState() {
+    // TODO: implement MoviesState
+    throw UnimplementedError();
+  }
+}
 class ErrorState extends SearchMoviesState
 {
   final  String error;

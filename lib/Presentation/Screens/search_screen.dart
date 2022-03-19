@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/Date/Models/Movie.dart';
+import 'package:movies/Presentation/Widgets/saved_movies_list.dart';
 import 'package:movies/ViewModels/searchMoviesBloc/search_movie_bloc.dart';
 import 'package:movies/Style/theme.dart' as style;
 import 'package:movies/Presentation/Widgets/movie_card.dart';
@@ -72,14 +73,16 @@ class _HomeScreenState extends State<SearchScreen> {
                           List<Movie> moviesList = state.movieList;
                           totalPages=state.totalPage;
                           allMoviesList.addAll(moviesList);
-                          if(moviesList.isNotEmpty){
-                            HiveOperations.getInstance().removeData();
-                            HiveOperations.getInstance().insertIntoHive(moviesList);
-                          }
                           return MoviesList(controller: _controller,allMoviesList: allMoviesList,moviesList:moviesList,);
                         }else if(state is LoadingStatePaging){
                           return  PagingMoviesList(controller:_controller ,allMoviesList:allMoviesList,);
-                        } else if(state is LoadingState)
+                        }else if (state is LoadedSavedSearchState){
+
+                          List<Movie> moviesList = state.movieList;
+                          return SavedMoviesList(allMoviesList:moviesList,);
+                        }
+
+                        else if(state is LoadingState)
                         {
                           return Center(child: CircularProgressIndicator());
                         }else{
@@ -150,9 +153,8 @@ class _HomeScreenState extends State<SearchScreen> {
   @override
   void dispose() {
     super.dispose();
-    _connectivitySubscription.cancel();
+    _connectivitySubscription?.cancel();
   }
-
   void FetechSavedSearchedResults() {
     FetchSavedMoviesResult getMoviesEvent=FetchSavedMoviesResult();
     BlocProvider.of<SearchMovieBloc>(context).add(getMoviesEvent);

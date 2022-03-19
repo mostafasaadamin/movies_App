@@ -1,31 +1,21 @@
-import 'dart:async';
-import 'package:connectivity/connectivity.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/Date/Models/Movie.dart';
 import 'package:movies/Presentation/Widgets/saved_movies_list.dart';
 import 'package:movies/ViewModels/searchMoviesBloc/search_movie_bloc.dart';
 import 'package:movies/Style/theme.dart' as style;
-import 'package:movies/Presentation/Widgets/movie_card.dart';
 import 'package:movies/Presentation/Widgets/paging_movies_list.dart';
 import 'package:movies/Presentation/Widgets/search_bar.dart';
 import 'package:movies/Presentation/Widgets/searched_movies_list.dart';
-import 'package:movies/ViewModels/use_cases/hive_operation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 class SearchScreen extends StatefulWidget {
   SearchScreen({Key key}) : super(key: key);
   bool isConnected=true;
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
-
 class _HomeScreenState extends State<SearchScreen> {
   final _controller = ScrollController();
-  final Connectivity _connectivity = Connectivity();
-  StreamSubscription<ConnectivityResult> _connectivitySubscription;
   int page=1;
   int totalPages=1;
   @override
@@ -120,39 +110,6 @@ class _HomeScreenState extends State<SearchScreen> {
         }
       }
     });
-  }
-  Future<void> initConnectivity() async {
-    ConnectivityResult result = ConnectivityResult.none;
-    try {
-      result = await _connectivity.checkConnectivity();
-    } on PlatformException catch (e) {
-      print(e.toString());
-    }
-    return _updateConnectionStatus(result);
-  }
-  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
-    print("result${result.toString()}");
-    switch (result) {
-      case ConnectivityResult.wifi:
-        widget.isConnected=true;
-        break;
-      case ConnectivityResult.mobile:
-        widget.isConnected=true;
-        break;
-      case ConnectivityResult.none:
-        widget.isConnected=false;
-        break;
-      default:
-        widget.isConnected=false;
-        break;
-
-    }
-    setState(() {});
-  }
-  @override
-  void dispose() {
-    super.dispose();
-    _connectivitySubscription?.cancel();
   }
   void FetechSavedSearchedResults() {
     FetchSavedMoviesResult getMoviesEvent=FetchSavedMoviesResult();

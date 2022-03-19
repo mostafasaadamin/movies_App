@@ -10,7 +10,7 @@ class HiveOperations{
   void insertIntoHive(List<Movie> moviesList) {
     print("insert to hive is called"+moviesList[0].title);
     final moviesBox = Hive.lazyBox('Movies');
-    moviesBox.clear();
+    // moviesBox.clear();
     for (int i = 0; i < moviesList.length; i++) {
       moviesBox.add(moviesList[i]);
     }
@@ -18,9 +18,12 @@ class HiveOperations{
   Future<List<Movie>> readSavedMovies()async{
     List<Movie> moviesList=[];
     final MoviesBox = Hive.lazyBox('Movies');
-    for (int i = 0; i < MoviesBox.length; i++) {
+    for (int i = MoviesBox.length-1; i>=0; i--) {
       Movie movie =await  MoviesBox.get(i) as Movie;
       moviesList.add(movie);
+      if(moviesList.length==50){
+        break;
+      }
     }
     return moviesList;
   }

@@ -77,7 +77,6 @@ class _HomeScreenState extends State<SearchScreen> {
                         }else if(state is LoadingStatePaging){
                           return  PagingMoviesList(controller:_controller ,allMoviesList:allMoviesList,);
                         }else if (state is LoadedSavedSearchState){
-
                           List<Movie> moviesList = state.movieList;
                           return SavedMoviesList(allMoviesList:moviesList,);
                         }

@@ -63,7 +63,7 @@ class SearchMovieBloc extends Bloc<SearchMovieEvent, SearchMoviesState> {
       }
 
     }else if (event is FetchSavedMoviesResult){
-      yield LoadingStatePaging();
+      yield LoadingState();
       try{
 List<Movie> movies=await HiveOperations.getInstance().readSavedMovies();
 print("MoviesSizeIS${movies.length}");
